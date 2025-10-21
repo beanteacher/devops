@@ -1,0 +1,5 @@
+groups:
+  - name: recording-rules
+    rules:
+      - record: job:memory_usage
+        expr: round(100 * (1 - windows_memory_available_bytes / windows_memory_physical_total_bytes))

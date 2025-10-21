@@ -1,0 +1,22 @@
+groups:
+  - name: base-alerts
+    rules:
+      # mysqld_exporter가 안 잡히면 알림
+      - alert: MySQLExporterDown
+        expr: up{job="mysql"} == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "mysqld_exporter down"
+          description: "mysqld_exporter 대상이 2분 이상 down 상태입니다."
+
+      # Windows Exporter가 안 잡히면 알림
+      - alert: WindowsExporterDown
+        expr: up{job="windows"} == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "windows_exporter down"
+          description: "windows_exporter 대상이 2분 이상 down 상태입니다."

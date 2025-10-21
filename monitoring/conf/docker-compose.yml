@@ -1,0 +1,56 @@
+version: "3.9"
+services:
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/rules:/etc/prometheus/rules:ro
+    depends_on:
+      - alertmanager
+#      - mysqld-exporter
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.enable-lifecycle'
+    ports:
+      - '9090:9090'
+    restart: unless-stopped
+  
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: alertmanager
+    command: ['--config.file=/etc/alertmanager/alertmanager.yml']
+    ports:
+      - '9093:9093'
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    restart: unless-stopped
+
+  #mysqld-exporter:
+    #image: prom/mysqld-exporter:latest
+    #container_name: mysqld-exporter
+    #command:
+      #- '--config.my-cnf=/etc/mysqld_exporter/.my.cnf'
+    #volumes:
+      #- ./mysqld-exporter/.my.cnf:/etc/mysqld_exporter/.my.cnf:ro
+    #environment:
+      #- DATA_SOURCE_NAME=exporter:exporter_pass@(host.docker.internal:3306)/
+    #ports:
+      #- '9104:9104'
+    #restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    ports:
+      - '3000:3000'
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - C:\Users\wisecan\Desktop\min\grafana\grafana.ini:/etc/grafana/grafana.ini:ro
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+volumes:
+  grafana-data:

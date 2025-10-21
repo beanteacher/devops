@@ -1,0 +1,46 @@
+route:
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 2m
+  repeat_interval: 4h
+  receiver: 'default'
+  routes:
+    - match:
+        alertname: 'HighCpuUsage'
+      receiver: 'cpu-warning'
+      repeat_interval: 10m
+    - match:
+        alertname: 'CriticalCPUUsage'
+      receiver: 'cpu-critical'
+      repeat_interval: 1m
+    - match:
+        alertname: 'HighMemoryUsage'
+      receiver: 'memory-warning'
+      repeat_interval: 10s
+    - match:
+        alertname: 'CriticalMemoryUsage'
+      receiver: 'memory-critical'
+      repeat_interval: 1m
+    - match:
+        alertname: 'InstanceDown'
+      receiver: 'instance-down'
+      repeat_interval: 1m
+
+
+receivers:
+  - name: 'default'
+  - name: 'cpu-warning'
+    webhook_configs:
+      - url: 'http://host.docker.internal:8080/prom-alert'
+  - name: 'cpu-critical'
+    webhook_configs:
+      - url: 'http://host.docker.internal:8080/prom-alert'
+  - name: 'memory-warning'
+    webhook_configs:
+      - url: 'http://host.docker.internal:8080/prom-alert'
+  - name: 'memory-critical'
+    webhook_configs:
+      - url: 'http://host.docker.internal:8080/prom-alert'
+  - name: 'instance-down'
+    webhook_configs:
+      - url: 'http://host.docker.internal:8080/prom-alert'

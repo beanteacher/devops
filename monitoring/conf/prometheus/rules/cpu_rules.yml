@@ -1,0 +1,20 @@
+groups:
+  - name: CPUThreshold # CPU 임계치
+    rules:
+      - alert: HighCpuUsage
+        expr: job:cpu_usage:avg1m > 50
+        for: 3m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage on {{ $labels.instance }}"
+          description: "CPU usage on {{ $labels.instance }} is greater than 50%. Current usage: {{ $value }}%"
+        
+      - alert: CriticalCPUUsage
+        expr: job:cpu_usage:avg1m > 90
+        for: 1m
+        labels:
+          severity: ciritical
+        annotations:
+          summary: "Critical CPU usage on {{ $labels.instance }}"
+          description: "CPU usage on {{ $labels.instance }} is greater than 90%. Current usage: {{ $value }}%"

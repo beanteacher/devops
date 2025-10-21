@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="SERVICE_NAME" value="actuator" />
+    <property name="LOG_DIR" value="${LOG_DIR:-/home/wisecan/actuator/logs}"/>
+    <property name="LOG_PATH" value="${LOG_DIR}/${SERVICE_NAME}.log"/>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/${SERVICE_NAME}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%-5level] %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- test,local -->
+    <springProfile name="test,local">
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <charset>UTF-8</charset>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %magenta([%thread]) %highlight([%-5level]) %logger{36} - %msg%n</pattern>
+            </encoder>
+        </appender>
+
+        <logger name="com.zaxxer.hikari" level="WARN" />
+        <logger name="jdbc.sqlonly" level="info" />
+        <logger name="jdbc.sqltiming" level="off" />
+        <logger name="jdbc.audit" level="off" />
+        <logger name="jdbc.resultset" level="off" />
+        <logger name="jdbc.resultsettable" level="info" />
+        <logger name="jdbc.connection" level="warn" />
+        <logger name="com.example.actuator" level="debug" />
+
+        <root level="info" additivity="false">
+            <appender-ref ref="STDOUT" />
+        </root>
+    </springProfile>
+
+    <!-- development -->
+    <springProfile name="development">
+        <logger name="jdbc.sqlonly" level="off" />
+        <logger name="jdbc.sqltiming" level="warn" />
+        <logger name="jdbc.audit" level="off" />
+        <logger name="jdbc.resultset" level="off" />
+        <logger name="jdbc.resultsettable" level="off" />
+        <logger name="jdbc.connection" level="warn" />
+
+        <root level="info" additivity="false">
+            <appender-ref ref="FILE" />
+        </root>
+    </springProfile>
+
+</configuration>
