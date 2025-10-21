@@ -2,7 +2,7 @@ groups:
   - name: MemoryThreshold # Memory 임계치
     rules:
       - alert: HighMemoryUsage
-        expr: job:memory_usage > 60
+        expr: job:memory_usage > 60 and job:memory_usage <= 90
         for: 3m
         labels:
           severity: warning

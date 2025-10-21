@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
@@ -19,7 +18,6 @@ public class QueueGauge {
     private final AtomicInteger smsSize = new AtomicInteger(0);
     private final AtomicInteger mmsSize = new AtomicInteger(0);
     private final AtomicInteger rcsSize = new AtomicInteger(0);
-    private final QueueStatusRepository queueStatusRepository;
 
     @PostConstruct
     void init() {
@@ -37,11 +35,10 @@ public class QueueGauge {
                 .register(registry);
     }
 
-    // @Scheduled(fixedDelayString = "5000")
+    @Scheduled(fixedDelayString = "15000")
     void refreshFromDb() {
-        List<ServerCnt> stat = queueStatusRepository.findByServerInfo();
-        smsSize.set(stat.get(0).getCnt().intValue());
-        mmsSize.set(stat.get(1).getCnt().intValue());
-        rcsSize.set(stat.get(2).getCnt().intValue());
+        smsSize.set(10);
+        mmsSize.set(100);
+        rcsSize.set(1000);
     }
 }

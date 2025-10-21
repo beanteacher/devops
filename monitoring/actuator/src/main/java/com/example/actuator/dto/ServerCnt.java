@@ -1,4 +1,4 @@
-package com.example.actuator.metric.gauge;
+package com.example.actuator.dto;
 
 import lombok.Data;
 

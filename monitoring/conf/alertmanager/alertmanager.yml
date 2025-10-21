@@ -6,6 +6,14 @@ route:
   receiver: 'default'
   routes:
     - match:
+        alertname: 'MySQLExporterDown'
+      receiver: 'mysql-warning'
+      repeat_interval: 10m
+    - match:
+        alertname: 'WindowsExporterDown'
+      receiver: 'windows-warning'
+      repeat_interval: 10m
+    - match:
         alertname: 'HighCpuUsage'
       receiver: 'cpu-warning'
       repeat_interval: 10m
@@ -16,7 +24,7 @@ route:
     - match:
         alertname: 'HighMemoryUsage'
       receiver: 'memory-warning'
-      repeat_interval: 10s
+      repeat_interval: 10m
     - match:
         alertname: 'CriticalMemoryUsage'
       receiver: 'memory-critical'
@@ -25,10 +33,23 @@ route:
         alertname: 'InstanceDown'
       receiver: 'instance-down'
       repeat_interval: 1m
-
+    - match:
+        alertname: 'HighQueueSize'
+      receiver: 'queue-size-warning'
+      repeat_interval: 1m
+    - match:
+        alertname: 'CriticalQueueSize'
+      receiver: 'queue-size-critical'
+      repeat_interval: 1m
 
 receivers:
   - name: 'default'
+  - name: 'mysql-warning'
+    webhook_configs:
+      - url: 'http://host.docker.internal:8080/prom-alert'
+  - name: 'windows-warning'
+    webhook_configs:
+      - url: 'http://host.docker.internal:8080/prom-alert'
   - name: 'cpu-warning'
     webhook_configs:
       - url: 'http://host.docker.internal:8080/prom-alert'
@@ -42,5 +63,11 @@ receivers:
     webhook_configs:
       - url: 'http://host.docker.internal:8080/prom-alert'
   - name: 'instance-down'
+    webhook_configs:
+      - url: 'http://host.docker.internal:8080/prom-alert'
+  - name: 'queue-size-warning'
+    webhook_configs:
+      - url: 'http://host.docker.internal:8080/prom-alert'
+  - name: 'queue-size-critical'
     webhook_configs:
       - url: 'http://host.docker.internal:8080/prom-alert'

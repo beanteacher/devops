@@ -1,0 +1,20 @@
+groups:
+  - name: QueueSizeThreshold # Memory 임계치
+    rules:
+      - alert: HighQueueSize
+        expr: relay_queue_size > 100 and relay_queue_size <= 500
+        for: 3m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Warning Relay backlog ({{ $labels.type }}) on {{ $labels.instance }}"
+          description: "type={{ $labels.type }}, size={{ $value }} (job={{ $labels.job }}, app={{ $labels.application }})"
+
+      - alert: CriticalQueueSize
+        expr: relay_queue_size > 500
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Critical Relay backlog ({{ $labels.type }}) on {{ $labels.instance }}"
+          description: "type={{ $labels.type }}, size={{ $value }} (job={{ $labels.job }}, app={{ $labels.application }})"

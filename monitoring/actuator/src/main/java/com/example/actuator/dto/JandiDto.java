@@ -30,7 +30,7 @@ public class JandiDto {
 
     public JandiDto(AlertDto alert) {
         this.body = "[" + alert.getSeverity().toUpperCase() + "]" + alert.getLabel();
-        this.connectColor = "#FAC11B";
+        this.connectColor = alert.getSeverity().equals("critical") ? "#FFA8A8" : "#FAC11B";
         this.connectInfo = new ArrayList<>();
         this.connectInfo.add(new ConnectInfo("[" + alert.getSeverity().toUpperCase() + "]" + alert.getLabel(), alert.getDescription() + alert.getAlerts().get(0).getStartsAt()));
     }
