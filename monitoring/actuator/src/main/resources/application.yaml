@@ -49,3 +49,9 @@ spring:
       keepalive-time: 180000
       minimum-idle: 5
       maximum-pool-size: 13
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: redispass
