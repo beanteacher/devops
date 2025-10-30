@@ -9,6 +9,9 @@ scrape_configs:
         labels:
           env: 'prod'
           role: 'windows'
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis-exporter:9121']
 
   # - job_name: 'mysql'
   #   static_configs:
@@ -17,10 +20,10 @@ scrape_configs:
   #        env: 'prod'
   #        role: 'mysql'
 
-  - job_name: 'web'
-    metrics_path: /actuator/prometheus
-    static_configs:
-      - targets: ['host.docker.internal:7071', 'host.docker.internal:7070']
+  #- job_name: 'web'
+  #  metrics_path: /actuator/prometheus
+  #  static_configs:
+  #    - targets: ['host.docker.internal:7071', 'host.docker.internal:7070']
 
   - job_name: 'queue-status'
     metrics_path: /actuator/prometheus
