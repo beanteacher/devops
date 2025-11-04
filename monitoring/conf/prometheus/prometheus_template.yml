@@ -1,0 +1,27 @@
+global
+  evaluation_interval {{global.evaluationInterval}}
+  scrape_interval {{global.scrapeInterval}}
+
+scrape_configs
+  {{#jobs}}
+  - job_name '{{jobName}}'
+    {{#metricsPath}}metrics_path {{metricsPath}}{{metricsPath}}
+    static_configs
+      - targets ['{{targetsIpPort}}']
+        {{#hasLabels}}
+        labels
+          {{#labels}}
+          {{key}} '{{value}}'
+          {{labels}}
+        {{hasLabels}}
+  {{jobs}}
+
+alerting
+  alertmanagers
+    - static_configs
+      - targets ['{{alertmanagers.targetsIpPort}}']
+
+rule_files
+  {{#rules}}
+  - .rules{{.}}.yml
+  {{rules}}

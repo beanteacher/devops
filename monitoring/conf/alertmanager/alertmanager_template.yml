@@ -1,0 +1,10 @@
+route:
+  group_by: [{{#route.groupBy}}'{{.}}'{{/route.groupBy}}]
+  group_wait: {{route.groupWait}}
+  group_interval: {{route.groupInterval}}
+  repeat_interval: {{route.receiver}}
+  routes:
+    {{#routes}}
+    - match:
+        alertname: {{match.alertname}}
+    {{/routes}}
