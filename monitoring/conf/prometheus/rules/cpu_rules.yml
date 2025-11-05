@@ -14,7 +14,7 @@ groups:
         expr: job:cpu_usage:avg1m > 90
         for: 1m
         labels:
-          severity: ciritical
+          severity: critical
         annotations:
           summary: "Critical CPU usage on {{ $labels.instance }}"
           description: "CPU usage on {{ $labels.instance }} is greater than 90%. Current usage: {{ $value }}%"

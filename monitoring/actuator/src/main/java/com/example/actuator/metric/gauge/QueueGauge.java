@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -39,6 +41,19 @@ public class QueueGauge {
     void refreshFromDb() {
         smsSize.set(10);
         mmsSize.set(100);
-        rcsSize.set(1000);
+        rcsSize.set(100);
+    }
+
+
+    @Scheduled(fixedDelay = 30000)
+    void test() {
+        String url = "http://localhost:9090/api/v1/query?query=job:cpu_usage:avg30m";
+
+        try {
+            String response = new RestTemplate().getForObject(url, String.class);
+            System.out.println("Prometheus response: " + response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

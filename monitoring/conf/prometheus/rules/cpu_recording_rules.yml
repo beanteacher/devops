@@ -1,5 +1,49 @@
 groups:
-  - name: recording-rules
+  - name: cpu-usage-1m
+    interval: 15s
     rules:
       - record: job:cpu_usage:avg1m
         expr: round(100 * (1 - avg by (instance) (rate(windows_cpu_time_total{mode="idle"}[1m]))))
+
+  - name: cpu-usage-5m
+    interval: 30s
+    rules:
+      - record: job:cpu_usage:avg5m
+        expr: round(100 * (1 - avg by (instance) (rate(windows_cpu_time_total{mode="idle"}[5m]))))
+
+  - name: cpu-usage-10m
+    interval: 1m
+    rules:
+      - record: job:cpu_usage:avg10m
+        expr: round(100 * (1 - avg by (instance) (rate(windows_cpu_time_total{mode="idle"}[10m]))))
+
+  - name: cpu-usage-30m
+    interval: 2m
+    rules:
+      - record: job:cpu_usage:avg30m
+        expr: round(100 * (1 - avg by (instance) (rate(windows_cpu_time_total{mode="idle"}[30m]))))
+
+  # ---- 시간 단위 창 ---------------------------------------------------------
+  - name: cpu-usage-1h
+    interval: 5m
+    rules:
+      - record: job:cpu_usage:avg1h
+        expr: round(100 * (1 - avg by (instance) (rate(windows_cpu_time_total{mode="idle"}[1h]))))
+
+  - name: cpu-usage-6h
+    interval: 10m
+    rules:
+      - record: job:cpu_usage:avg6h
+        expr: round(100 * (1 - avg by (instance) (rate(windows_cpu_time_total{mode="idle"}[6h]))))
+
+  - name: cpu-usage-12h
+    interval: 15m
+    rules:
+      - record: job:cpu_usage:avg12h
+        expr: round(100 * (1 - avg by (instance) (rate(windows_cpu_time_total{mode="idle"}[12h]))))
+
+  - name: cpu-usage-24h
+    interval: 30m
+    rules:
+      - record: job:cpu_usage:avg24h
+        expr: round(100 * (1 - avg by (instance) (rate(windows_cpu_time_total{mode="idle"}[24h]))))

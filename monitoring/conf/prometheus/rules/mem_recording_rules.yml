@@ -1,5 +1,49 @@
 groups:
-  - name: recording-rules
+  - name: memory-usage-1m
+    interval: 15s
     rules:
-      - record: job:memory_usage
-        expr: round(100 * (1 - windows_memory_available_bytes / windows_memory_physical_total_bytes))
+      - record: job:memory_usage:avg1m
+        expr: round(100 * (1 - (avg_over_time(windows_memory_available_bytes[1m]) / avg_over_time(windows_memory_physical_total_bytes[1m]))))
+
+  - name: memory-usage-5m
+    interval: 30s
+    rules:
+      - record: job:memory_usage:avg5m
+        expr: round(100 * (1 - (avg_over_time(windows_memory_available_bytes[5m]) / avg_over_time(windows_memory_physical_total_bytes[5m]))))
+
+  - name: memory-usage-10m
+    interval: 1m
+    rules:
+      - record: job:memory_usage:avg10m
+        expr: round(100 * (1 - (avg_over_time(windows_memory_available_bytes[10m]) / avg_over_time(windows_memory_physical_total_bytes[10m]))))
+
+  - name: memory-usage-30m
+    interval: 2m
+    rules:
+      - record: job:memory_usage:avg30m
+        expr: round(100 * (1 - (avg_over_time(windows_memory_available_bytes[30m]) / avg_over_time(windows_memory_physical_total_bytes[30m]))))
+
+  # ------ 시간 단위 창 ------------------------------------------------------
+  - name: memory-usage-1h
+    interval: 5m
+    rules:
+      - record: job:memory_usage:avg1h
+        expr: round(100 * (1 - (avg_over_time(windows_memory_available_bytes[1h]) / avg_over_time(windows_memory_physical_total_bytes[1h]))))
+
+  - name: memory-usage-6h
+    interval: 10m
+    rules:
+      - record: job:memory_usage:avg6h
+        expr: round(100 * (1 - (avg_over_time(windows_memory_available_bytes[6h]) / avg_over_time(windows_memory_physical_total_bytes[6h]))))
+
+  - name: memory-usage-12h
+    interval: 15m
+    rules:
+      - record: job:memory_usage:avg12h
+        expr: round(100 * (1 - (avg_over_time(windows_memory_available_bytes[12h]) / avg_over_time(windows_memory_physical_total_bytes[12h]))))
+
+  - name: memory-usage-24h
+    interval: 30m
+    rules:
+      - record: job:memory_usage:avg24h
+        expr: round(100 * (1 - (avg_over_time(windows_memory_available_bytes[24h]) / avg_over_time(windows_memory_physical_total_bytes[24h]))))

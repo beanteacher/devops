@@ -16,11 +16,6 @@ scrape_configs
         {{hasLabels}}
   {{jobs}}
 
-alerting
-  alertmanagers
-    - static_configs
-      - targets ['{{alertmanagers.targetsIpPort}}']
-
 rule_files
   {{#rules}}
   - .rules{{.}}.yml
